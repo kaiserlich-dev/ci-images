@@ -7,6 +7,7 @@ Shared CI images for kaiserlich-dev repos.
 | Image | Tags | Contents |
 |-------|------|----------|
 | `ghcr.io/kaiserlich-dev/ci-images/ruby` | `3.3.5`, `3.4.1` | Ruby + build-essential + git |
+| `ghcr.io/kaiserlich-dev/ci-images/node` | `20`, `22` | Node.js + python3/make/g++ (native modules) |
 
 ## Usage
 
@@ -34,6 +35,6 @@ jobs:
             "
 ```
 
-## Adding a new Ruby version
+## Adding versions
 
-Add it to the matrix in `.github/workflows/build.yml` and push.
+Add to the matrix in `.github/workflows/build.yml` and push.

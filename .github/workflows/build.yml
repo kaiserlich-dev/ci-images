@@ -38,3 +38,33 @@ jobs:
           build-args: RUBY_VERSION=${{ matrix.ruby }}
           tags: |
             ${{ env.REGISTRY }}/kaiserlich-dev/ci-images/ruby:${{ matrix.ruby }}
+
+  node:
+    runs-on: [self-hosted, linux, x64]
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        node: ["20", "22"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: node
+          push: true
+          build-args: NODE_VERSION=${{ matrix.node }}
+          tags: |
+            ${{ env.REGISTRY }}/kaiserlich-dev/ci-images/node:${{ matrix.node }}
