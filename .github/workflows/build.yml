@@ -10,7 +10,7 @@ env:
 
 jobs:
   ruby:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     permissions:
       contents: read
       packages: write
@@ -32,8 +32,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up Docker builder
+        uses: useblacksmith/setup-docker-builder@06dd9c83a5d541274d2e3ac67625560979275267 # v2.3.0
+        with:
+          cache-key: kaiserlich-dev/ci-images/ruby-${{ matrix.ruby }}
+          nofallback: true
+
       - name: Build and push
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
+        uses: useblacksmith/build-push-action@9b0579bbec7a6cad2f171596c57e7ac1e7658850 # v2.3.0
         with:
           context: ruby
           push: true
@@ -42,7 +48,7 @@ jobs:
             ${{ env.REGISTRY }}/kaiserlich-dev/ci-images/ruby:${{ matrix.ruby }}
 
   node:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     permissions:
       contents: read
       packages: write
@@ -64,8 +70,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up Docker builder
+        uses: useblacksmith/setup-docker-builder@06dd9c83a5d541274d2e3ac67625560979275267 # v2.3.0
+        with:
+          cache-key: kaiserlich-dev/ci-images/node-${{ matrix.node }}
+          nofallback: true
+
       - name: Build and push
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
+        uses: useblacksmith/build-push-action@9b0579bbec7a6cad2f171596c57e7ac1e7658850 # v2.3.0
         with:
           context: node
           push: true
